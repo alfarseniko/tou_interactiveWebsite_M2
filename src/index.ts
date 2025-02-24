@@ -1,6 +1,7 @@
 /*--------------------IMPORTS-------------------- */
 import { IProject, Role, Status } from "./class/Project";
 import { ProjectsManager } from "./class/ProjectsManager";
+import { ErrorPopup } from "./class/ErrorPopup";
 
 /*--------------------FUNCTIONS-------------------- */
 function toggleModal(id: string) {
@@ -55,8 +56,8 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
       toggleModal("new-project-modal");
       console.log(project);
     } catch (err) {
+      new ErrorPopup(err.message);
       console.log(typeof err.message);
-      alert(err);
     }
   });
 } else {
