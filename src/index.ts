@@ -48,11 +48,16 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
       status: formData.get("status") as Status,
       finishDate: new Date(formData.get("finishDate") as string),
     };
-    // Initiating a PROJECTSMANAGER class
-    const project = projectsManager.newProject(data);
-    projectForm.reset();
-    toggleModal("new-project-modal");
-    console.log(project);
+    try {
+      // Initiating a PROJECTSMANAGER class
+      const project = projectsManager.newProject(data);
+      projectForm.reset();
+      toggleModal("new-project-modal");
+      console.log(project);
+    } catch (err) {
+      console.log(typeof err.message);
+      alert(err);
+    }
   });
 } else {
   // WARNING in case of not finding the required form

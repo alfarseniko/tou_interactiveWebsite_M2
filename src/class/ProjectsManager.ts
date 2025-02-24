@@ -27,12 +27,18 @@ export class ProjectsManager {
   }
 
   newProject(data: IProject) {
-    if (this.getProjectByName(data.name)) {
-      console.warn("Project with same name already exists");
-      return;
+    /*  The map() method iterates over the whole array and then returns a list of required elements */
+    const projectNames = this.list.map((project) => {
+      return project.name;
+    });
+    // A custom ERROR has been created for same instances of name
+    if (projectNames.includes(data.name)) {
+      throw new Error(
+        `A project with the name, "${data.name}", already exists in the database.`
+      );
     }
     const project = new Project(data);
-    /*  project UI is the PROJECT CARD
+    /*  project.UI is the PROJECT CARD
         this.UI is the container for the project cards */
     this.ui.append(project.ui);
     // data is stored in the class
@@ -71,6 +77,9 @@ export class ProjectsManager {
   }
 
   getProjectByName(name: string) {
+    /*  The find() method takes a callback function in which we must
+        return a boolean value. The find() method checks which element
+        of the array got true and returns the element */
     const projectByName = this.list.find((project) => {
       return project.name.toLowerCase == name.toLowerCase;
     });
