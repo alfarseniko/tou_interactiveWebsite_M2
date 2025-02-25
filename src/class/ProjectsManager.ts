@@ -85,4 +85,12 @@ export class ProjectsManager {
     });
     return projectByName;
   }
+
+  uploadToJSON() {
+    // JSON.stringify converts any object or array of objects into JSON format
+    const json = JSON.stringify(this.list, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+  }
+
+  downloadFromJSON() {}
 }

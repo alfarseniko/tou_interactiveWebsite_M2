@@ -120,6 +120,22 @@ header {
   justify-content: space-between;
 }
 
+#header-button-container {
+  display: flex;
+  flex-direction: row;
+}
+
+#up-down-buttons {
+  display: flex;
+  flex-direction: row;
+  padding-right: 20px;
+}
+
+#up-down-buttons button {
+  background-color: transparent;
+  padding: 5px 5px 5px 5px;
+}
+
 .project-card {
   background-color: var(--background-100);
   border-radius: 8px;
