@@ -1,3 +1,4 @@
+import { ErrorPopup } from "./ErrorPopup";
 import { IProject, Project } from "./Project";
 
 export class ProjectsManager {
@@ -86,11 +87,70 @@ export class ProjectsManager {
     return projectByName;
   }
 
-  uploadToJSON() {
-    // JSON.stringify converts any object or array of objects into JSON format
+  exportAsJSON(fileName: string = "Projects") {
+    /*  JSON.stringify converts any object or array of objects into JSON format
+        Arg1 is for the object to be converted
+        Arg2 is a replacer function to omit or change the original object
+        Arg3 is a space value for stringification
+    */
     const json = JSON.stringify(this.list, null, 2);
+    /** A Blob() object takes a data value for conversion and a type to get rules for conversion to binary data
+     */
     const blob = new Blob([json], { type: "application/json" });
+    // Creates a url that can be tied to the blob
+    const url = URL.createObjectURL(blob);
+    // URL needs to be associated with a HTML element
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    // url is revoked to prevent memory leaks
+    URL.revokeObjectURL(url);
   }
 
-  downloadFromJSON() {}
+  importFromJSON() {
+    // Create an input element to upload files
+    const input = document.createElement("input");
+    // Define the type of input
+    input.type = "file";
+    // Define what the input accepts
+    input.accept = "application/json";
+    // FileReader() is a class to read the files from any user input
+    const reader = new FileReader();
+
+    // when a user selects a file, the change event is fired
+    input.addEventListener("change", () => {
+      // input.files contains the required files
+      const filesList = input.files;
+      // exit the block if filesList is empty
+      if (!filesList) {
+        return;
+      }
+      //  file has been loaded in the reader as string data
+      reader.readAsText(filesList[0]);
+    });
+
+    // once the reader has been loaded with the files
+    reader.addEventListener("load", () => {
+      // the string data can be used by accessing reader.result
+      const json = reader.result;
+      // return if result is empty
+      if (!json) {
+        return;
+      }
+      // feed the array back into the IProject format
+      // json as string is type assertion
+      // JSON.parse converts string to JSON
+      const projects: IProject[] = JSON.parse(json as string);
+      // for loop to add all projects to the projectsManager
+      for (const project of projects) {
+        try {
+          this.newProject(project);
+        } catch (error) {
+          new ErrorPopup(error.message);
+        }
+      }
+    });
+    input.click();
+  }
 }

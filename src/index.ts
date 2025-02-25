@@ -69,3 +69,20 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
 }
 
 /*----------------FUNCTION TESTS-------------------- */
+const exportButton = document.getElementById(
+  "export-button"
+) as HTMLButtonElement;
+if (exportButton) {
+  exportButton.addEventListener("click", () => {
+    projectsManager.exportAsJSON();
+  });
+}
+const importButton = document.getElementById(
+  "import-button"
+) as HTMLButtonElement;
+if (importButton) {
+  importButton.addEventListener("click", () => {
+    projectsManager.importFromJSON();
+    console.log("all good");
+  });
+}
