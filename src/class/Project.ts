@@ -31,13 +31,9 @@ export class Project implements IProject {
 
   /*--------------------CONSTRUCTOR-------------------- */
   constructor(data: IProject) {
-    this.name = data.name;
-    this.description = data.description;
-    this.role = data.role;
-    this.status = data.status;
-    this.finishDate = data.finishDate;
-    this.id = uuidv4();
-    // Function for generating UI
+    for (const key in data) {
+      this[key] = data[key];
+    }
     this.setUi();
   }
 

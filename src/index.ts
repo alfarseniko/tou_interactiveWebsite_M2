@@ -68,7 +68,7 @@ if (projectForm && projectForm instanceof HTMLFormElement) {
   );
 }
 
-/*----------------FUNCTION TESTS-------------------- */
+/*----------------IMPORT/EXPORT BUTTONS-------------------- */
 const exportButton = document.getElementById(
   "export-button"
 ) as HTMLButtonElement;
@@ -84,5 +84,19 @@ if (importButton) {
   importButton.addEventListener("click", () => {
     projectsManager.importFromJSON();
     console.log("all good");
+  });
+
+  /*------------BUTTON TO GO BACK TO MAIN PAGE-------------- */
+  const projectsButton = document.getElementById(
+    "projects-button"
+  ) as HTMLDataListElement;
+  projectsButton.addEventListener("click", () => {
+    const projectsPage = document.getElementById("projects-page");
+    const detailsPage = document.getElementById("project-details");
+    if (!projectsPage || !detailsPage) {
+      return;
+    }
+    projectsPage.style.display = "flex";
+    detailsPage.style.display = "none";
   });
 }

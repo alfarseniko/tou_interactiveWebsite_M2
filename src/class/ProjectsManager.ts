@@ -44,7 +44,31 @@ export class ProjectsManager {
     this.ui.append(project.ui);
     // data is stored in the class
     this.list.push(project);
+    // EventListener for going to details page
+    this.ui.addEventListener("click", () => {
+      const projectsPage = document.getElementById("projects-page");
+      const detailsPage = document.getElementById("project-details");
+      if (!projectsPage || !detailsPage) {
+        return;
+      }
+      projectsPage.style.display = "none";
+      detailsPage.style.display = "flex";
+      // To provide project specific info on details page
+      this.setDetailsPage(project);
+    });
+
     return project;
+  }
+
+  setDetailsPage(project: IProject) {
+    const detailsPage = document.getElementById("project-details");
+    if (!detailsPage) {
+      return;
+    }
+    const name = detailsPage.querySelector("[details-page-info='name']");
+    if (name) {
+      name.textContent = project.name;
+    }
   }
 
   getProject(id: string) {
