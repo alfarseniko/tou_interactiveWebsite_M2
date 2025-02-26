@@ -2,8 +2,8 @@
 import { v4 as uuidv4 } from "uuid";
 
 /*--------------------EXPORTING TYPES-------------------- */
-export type Status = "pending" | "active" | "finished";
-export type Role = "architect" | "engineer" | "developer";
+export type Status = "Pending" | "Active" | "Finished";
+export type Role = "Architect" | "Engineer" | "Developer";
 
 /*--------------------EXPORTING INTERFACES-------------------- */
 export interface IProject {
@@ -19,8 +19,8 @@ export class Project implements IProject {
   // Defining variables in a class to satisfy IProject
   name: string;
   description: string;
-  status: "pending" | "active" | "finished";
-  role: "architect" | "engineer" | "developer";
+  status: Status;
+  role: Role;
   finishDate: Date;
 
   // Initiating internal properties
@@ -34,6 +34,7 @@ export class Project implements IProject {
     for (const key in data) {
       this[key] = data[key];
     }
+    this.id = uuidv4();
     this.setUi();
   }
 

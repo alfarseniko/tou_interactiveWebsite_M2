@@ -20,8 +20,8 @@ export class ProjectsManager {
     const data: IProject = {
       name: "Project Name",
       description: "A normal description",
-      status: "active",
-      role: "architect",
+      status: "Active",
+      role: "Architect",
       finishDate: new Date(),
     };
     this.newProject(data);
@@ -59,15 +59,59 @@ export class ProjectsManager {
 
     return project;
   }
-
-  setDetailsPage(project: IProject) {
+  /**------------------SETTING DETAILS PAGE DATA----------------- */
+  setDetailsPage(project) {
     const detailsPage = document.getElementById("project-details");
     if (!detailsPage) {
       return;
     }
+    // ---------NAME HEADING-----------
+    const nameHeading = detailsPage.querySelector(
+      "[details-page-info='name-heading']"
+    );
+    if (nameHeading) {
+      nameHeading.textContent = project.name;
+    }
+    // ---------DESCRIPTION HEADING-----------
+    const descriptionHeading = detailsPage.querySelector(
+      "[details-page-info='description-heading']"
+    );
+    if (descriptionHeading) {
+      descriptionHeading.textContent = project.description;
+    }
+    // ---------NAME-----------
     const name = detailsPage.querySelector("[details-page-info='name']");
     if (name) {
       name.textContent = project.name;
+    }
+    // ---------DESCRIPTION-----------
+    const description = detailsPage.querySelector(
+      "[details-page-info='description']"
+    );
+    if (description) {
+      description.textContent = project.description;
+    }
+    // ---------STATUS-----------
+    const status = detailsPage.querySelector("[details-page-info='status']");
+    if (status) {
+      status.textContent = project.status;
+    }
+    // ---------COST-----------
+    const cost = detailsPage.querySelector("[details-page-info='cost']");
+    if (cost) {
+      cost.textContent = "$" + Math.round(project.cost).toString();
+    }
+    // ---------ROLE-----------
+    const role = detailsPage.querySelector("[details-page-info='role']");
+    if (role) {
+      role.textContent = project.role;
+    }
+    // ---------FINISH DATE-----------
+    const finishDate = detailsPage.querySelector(
+      "[details-page-info='finishDate']"
+    );
+    if (finishDate) {
+      finishDate.textContent = project.finishDate.toISOString().split("T")[0];
     }
   }
 
