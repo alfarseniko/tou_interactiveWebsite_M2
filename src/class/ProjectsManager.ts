@@ -65,54 +65,36 @@ export class ProjectsManager {
     if (!detailsPage) {
       return;
     }
-    // ---------NAME HEADING-----------
-    const nameHeading = detailsPage.querySelector(
-      "[details-page-info='name-heading']"
-    );
-    if (nameHeading) {
-      nameHeading.textContent = project.name;
-    }
-    // ---------DESCRIPTION HEADING-----------
-    const descriptionHeading = detailsPage.querySelector(
-      "[details-page-info='description-heading']"
-    );
-    if (descriptionHeading) {
-      descriptionHeading.textContent = project.description;
-    }
-    // ---------NAME-----------
-    const name = detailsPage.querySelector("[details-page-info='name']");
-    if (name) {
-      name.textContent = project.name;
-    }
-    // ---------DESCRIPTION-----------
-    const description = detailsPage.querySelector(
-      "[details-page-info='description']"
-    );
-    if (description) {
-      description.textContent = project.description;
-    }
-    // ---------STATUS-----------
-    const status = detailsPage.querySelector("[details-page-info='status']");
-    if (status) {
-      status.textContent = project.status;
-    }
-    // ---------COST-----------
-    const cost = detailsPage.querySelector("[details-page-info='cost']");
-    if (cost) {
-      cost.textContent = "$" + Math.round(project.cost).toString();
-    }
-    // ---------ROLE-----------
-    const role = detailsPage.querySelector("[details-page-info='role']");
-    if (role) {
-      role.textContent = project.role;
-    }
-    // ---------FINISH DATE-----------
-    const finishDate = detailsPage.querySelector(
-      "[details-page-info='finishDate']"
-    );
-    if (finishDate) {
-      finishDate.textContent = project.finishDate.toISOString().split("T")[0];
-    }
+    // Derfining a fields array with the required info about each attribute
+    const fields = [
+      { selector: "[details-page-info='name-heading']", value: project.name },
+      {
+        selector: "[details-page-info='description-heading']",
+        value: project.description,
+      },
+      { selector: "[details-page-info='name']", value: project.name },
+      {
+        selector: "[details-page-info='description']",
+        value: project.description,
+      },
+      { selector: "[details-page-info='status']", value: project.status },
+      {
+        selector: "[details-page-info='cost']",
+        value: "$" + Math.round(project.cost),
+      },
+      { selector: "[details-page-info='role']", value: project.role },
+      {
+        selector: "[details-page-info='finishDate']",
+        value: project.finishDate.toISOString().split("T")[0],
+      },
+    ];
+    // For loop iterates for each value
+    fields.forEach(({ selector, value }) => {
+      const element = detailsPage.querySelector(selector);
+      if (element) {
+        element.textContent = value;
+      }
+    });
   }
 
   getProject(id: string) {
