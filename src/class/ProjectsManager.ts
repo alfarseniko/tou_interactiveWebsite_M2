@@ -38,6 +38,12 @@ export class ProjectsManager {
         `A project with the name, "${data.name}", already exists in the database.`
       );
     }
+
+    // A custom ERROR has been created for less than 5 chars
+    if (this.isLessThanFiveChars(data.name)) {
+      throw new Error(`The project title should be more than 5 characters.`);
+    }
+
     const project = new Project(data);
     /*  project.UI is the PROJECT CARD
         this.UI is the container for the project cards */
@@ -214,5 +220,10 @@ export class ProjectsManager {
   private randomColor() {
     const colors = ["#EDAE49", "#D1495B", "#00798C", "#30638E", "#003D5B"];
     return colors[Math.floor(Math.random() * colors.length)];
+  }
+
+  /**  Checks if projectTitle is less than 5 chars */
+  private isLessThanFiveChars(title: string) {
+    return title.length < 5 ? true : false;
   }
 }

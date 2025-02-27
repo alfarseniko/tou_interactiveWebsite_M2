@@ -34,6 +34,9 @@ export class Project implements IProject {
     for (const key in data) {
       this[key] = data[key];
     }
+    if (this.finishDate instanceof Date && isNaN(this.finishDate.getTime())) {
+      this.finishDate = new Date("December 25, 2000 03:24:00");
+    }
     this.id = uuidv4();
     this.setUi();
   }
