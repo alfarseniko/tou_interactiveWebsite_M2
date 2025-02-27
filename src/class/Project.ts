@@ -45,7 +45,9 @@ export class Project implements IProject {
     this.ui.className = "project-card";
     // Defining the children for Div Element
     this.ui.innerHTML = `<div class="card-header">
-            <p style="background-color: #ca8134; padding: 10px; border-radius: 8px; aspect-ratio: 1;">HC</p>
+            <p style="background-color: ${this.randomColor()}; padding: 10px; border-radius: 8px; aspect-ratio: 1; text-transform: uppercase;">${
+      this.name[0] + this.name[1]
+    }</p>
             <div>
               <h5>${this.name}</h5>
               <p>${this.description}</p>
@@ -69,5 +71,10 @@ export class Project implements IProject {
               <p>${this.progress.toFixed(2)}%</p>
             </div>
           </div>`;
+  }
+
+  private randomColor() {
+    const colors = ["#EDAE49", "#D1495B", "#00798C", "#30638E", "#003D5B"];
+    return colors[Math.floor(Math.random() * colors.length)];
   }
 }

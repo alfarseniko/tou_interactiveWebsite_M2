@@ -87,12 +87,19 @@ export class ProjectsManager {
         selector: "[details-page-info='finishDate']",
         value: project.finishDate.toISOString().split("T")[0],
       },
+      {
+        selector: "[details-page-info='project-initials']",
+        value: project.name[0] + project.name[1],
+      },
     ];
     // For loop iterates for each value
     fields.forEach(({ selector, value }) => {
-      const element = detailsPage.querySelector(selector);
+      const element = detailsPage.querySelector(selector) as HTMLElement;
       if (element) {
         element.textContent = value;
+      }
+      if (element && selector === "[details-page-info='project-initials']") {
+        element.style.backgroundColor = this.randomColor();
       }
     });
   }
@@ -202,5 +209,10 @@ export class ProjectsManager {
       }
     });
     input.click();
+  }
+  /**  Returns a random color from an array of pre-selected colors */
+  private randomColor() {
+    const colors = ["#EDAE49", "#D1495B", "#00798C", "#30638E", "#003D5B"];
+    return colors[Math.floor(Math.random() * colors.length)];
   }
 }
