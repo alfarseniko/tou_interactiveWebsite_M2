@@ -26,47 +26,12 @@ if (newProjectBtn) {
     });
   });
 } else {
-  console.warn("The value inside newProjectBtn is:", newProjectBtn);
+  console.warn("The new project button was not found!");
 }
 
 /*----------------PROJECTS MANAGER CLASS-------------------- */
 const projectsListUi = document.getElementById("projects-list") as HTMLElement;
 const projectsManager = new ProjectsManager(projectsListUi);
-
-/*----------------Getting Form Data-------------------- */
-const projectForm = document.getElementById("new-project-form");
-// Checking if form exists and if it is of correct data type
-if (projectForm && projectForm instanceof HTMLFormElement) {
-  projectForm.addEventListener("submit", (e) => {
-    // Preventing default behaviour of form
-    e.preventDefault();
-    const formData = new FormData(projectForm);
-    // Initializing an object of type IProject to store project data
-    let data: IProject = {
-      name: formData.get("name") as string,
-      description: formData.get("description") as string,
-      role: formData.get("role") as Role,
-      status: formData.get("status") as Status,
-      finishDate: new Date(formData.get("finishDate") as string),
-    };
-    try {
-      // Initiating a PROJECTSMANAGER class
-      const project = projectsManager.newProject(data);
-      projectForm.reset();
-      toggleModal("new-project-modal");
-      console.log(project);
-    } catch (err) {
-      new ErrorPopup(err.message);
-      console.log(typeof err.message);
-    }
-  });
-} else {
-  // WARNING in case of not finding the required form
-  console.warn(
-    "The project form was not found! The project form:",
-    projectForm
-  );
-}
 
 /*----------------IMPORT/EXPORT BUTTONS-------------------- */
 const exportButton = document.getElementById(
@@ -99,4 +64,89 @@ if (importButton) {
     projectsPage.style.display = "flex";
     detailsPage.style.display = "none";
   });
+
+  /*------------BUTTON TO OPEN EDIT PROJECT FORM-------------- */
+  const editProjectButton = document.getElementById(
+    "edit-project-button"
+  ) as HTMLButtonElement;
+  if (editProjectButton) {
+    editProjectButton.addEventListener("click", () => {
+      toggleModal("edit-project-modal");
+      const closeButton = document.getElementById(
+        "close-button-edit-form"
+      ) as HTMLButtonElement;
+      closeButton.addEventListener("click", () => {
+        toggleModal("edit-project-modal");
+      });
+    });
+  } else {
+    console.warn("The edit project button was not found!");
+  }
+
+  /*----------------Getting Form Data NEW PROJECT----------------- */
+  const projectForm = document.getElementById("new-project-form");
+  // Checking if form exists and if it is of correct data type
+  if (projectForm && projectForm instanceof HTMLFormElement) {
+    projectForm.addEventListener("submit", (e) => {
+      // Preventing default behaviour of form
+      e.preventDefault();
+      const formData = new FormData(projectForm);
+      // Initializing an object of type IProject to store project data
+      let data: IProject = {
+        name: formData.get("name") as string,
+        description: formData.get("description") as string,
+        role: formData.get("role") as Role,
+        status: formData.get("status") as Status,
+        finishDate: new Date(formData.get("finishDate") as string),
+      };
+      try {
+        // Calling NEWPROJECT function
+        const project = projectsManager.newProject(data);
+        projectForm.reset();
+        toggleModal("new-project-modal");
+        console.log(project);
+      } catch (err) {
+        new ErrorPopup(err.message);
+      }
+    });
+  } else {
+    // WARNING in case of not finding the required form
+    console.warn(
+      "The project form was not found! The project form:",
+      projectForm
+    );
+  }
+
+  /*----------------Getting Form Data EDIT PROJECT----------------- */
+  const editForm = document.getElementById(
+    "edit-project-form"
+  ) as HTMLFormElement;
+  if (editForm) {
+    editForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const formData = new FormData(editForm);
+      // Initializing an object of type IProject to store project data
+      let data: IProject = {
+        name: formData.get("name") as string,
+        description: formData.get("description") as string,
+        role: formData.get("role") as Role,
+        status: formData.get("status") as Status,
+        finishDate: new Date(formData.get("finishDate") as string),
+      };
+      try {
+        // Calling NEWPROJECT function
+        const project = projectsManager.editProject(
+          projectsManager.currentProject,
+          data
+        );
+        editForm.reset();
+        toggleModal("new-project-modal");
+        console.log(project);
+      } catch (err) {
+        new ErrorPopup(err.message);
+      }
+    });
+  } else {
+    console.warn("The edit form was not found.");
+  }
 }

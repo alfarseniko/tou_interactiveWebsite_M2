@@ -41,6 +41,10 @@ export class Project implements IProject {
     this.setUi();
   }
 
+  editProject(data: IProject) {
+    // time to start working again
+  }
+
   private setUi() {
     // Initiating a HTML Div for PROJECT CARD with new data
     this.ui = document.createElement("div");

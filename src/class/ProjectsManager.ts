@@ -6,6 +6,7 @@ export class ProjectsManager {
   list: Project[] = [];
   // HTML Container for all project cards
   ui: HTMLElement;
+  currentProject: string;
 
   /*--------------------CONSTRUCTOR-------------------- */
   // CONTAINER is the HTMLElement which will house all the project cards
@@ -65,8 +66,39 @@ export class ProjectsManager {
 
     return project;
   }
+
+  /** ----------------------EDIT PROJECT-------------------- */
+  editProject(id: string, data: IProject) {
+    // Get the project from the current project open in details page
+    const project = this.getProject(id);
+    if (!project) {
+      return;
+    }
+    /*  The map() method iterates over the whole array and then returns a list of required elements */
+    const projectNames = this.list.map((project) => {
+      return project.name;
+    });
+    // A custom ERROR has been created for same instances of name
+    if (projectNames.includes(project.name)) {
+      throw new Error(
+        `A project with the name, "${project.name}", already exists in the database.`
+      );
+    }
+
+    // A custom ERROR has been created for less than 5 chars
+    if (this.isLessThanFiveChars(project.name)) {
+      throw new Error(`The project title should be more than 5 characters.`);
+    }
+
+    // Create a function to use project data to edit the project database
+    const edittedProject = project.editProject(data);
+    this.setDetailsPage(project);
+
+    return edittedProject;
+  }
   /**------------------SETTING DETAILS PAGE DATA----------------- */
   setDetailsPage(project) {
+    this.currentProject = project.id;
     const detailsPage = document.getElementById("project-details");
     if (!detailsPage) {
       return;
