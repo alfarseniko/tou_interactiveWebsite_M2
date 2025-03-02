@@ -79,30 +79,31 @@ export class ProjectsManager {
       return project.name;
     });
     // A custom ERROR has been created for same instances of name
-    if (projectNames.includes(project.name)) {
+    /*if (projectNames.includes(project.name)) {
       throw new Error(
         `A project with the name, "${project.name}", already exists in the database.`
       );
-    }
+    }*/
 
     // A custom ERROR has been created for less than 5 chars
     if (this.isLessThanFiveChars(project.name)) {
       throw new Error(`The project title should be more than 5 characters.`);
     }
-
+    console.log("Okay until data sent to Project object,", data);
     // Create a function to use project data to edit the project database
     const edittedProject = project.editProject(data);
-    this.setDetailsPage(project);
-
-    return edittedProject;
+    this.setDetailsPage(edittedProject);
+    console.log("works then");
   }
   /**------------------SETTING DETAILS PAGE DATA----------------- */
-  setDetailsPage(project) {
+  setDetailsPage(project: Project) {
     this.currentProject = project.id;
+    console.log("works 1");
     const detailsPage = document.getElementById("project-details");
     if (!detailsPage) {
       return;
     }
+    console.log("works 2");
     // Derfining a fields array with the required info about each attribute
     const fields = [
       { selector: "[details-page-info='name-heading']", value: project.name },
@@ -130,6 +131,7 @@ export class ProjectsManager {
         value: project.name[0] + project.name[1],
       },
     ];
+    console.log("works 3");
     // For loop iterates for each value
     fields.forEach(({ selector, value }) => {
       const element = detailsPage.querySelector(selector) as HTMLElement;
@@ -140,6 +142,7 @@ export class ProjectsManager {
         element.style.backgroundColor = this.randomColor();
       }
     });
+    console.log("works all");
   }
 
   getProject(id: string) {

@@ -43,6 +43,13 @@ export class Project implements IProject {
 
   editProject(data: IProject) {
     // time to start working again
+
+    for (const key in data) {
+      this[key] = data[key];
+    }
+    this.setUi();
+
+    return this;
   }
 
   private setUi() {

@@ -133,15 +133,17 @@ if (importButton) {
         status: formData.get("status") as Status,
         finishDate: new Date(formData.get("finishDate") as string),
       };
+      console.log("The following is form data,", data);
+      console.log(typeof data.finishDate);
       try {
         // Calling NEWPROJECT function
-        const project = projectsManager.editProject(
-          projectsManager.currentProject,
-          data
-        );
+        console.log(projectsManager.getProject(projectsManager.currentProject));
+        projectsManager.editProject(projectsManager.currentProject, data);
+        console.log("Data sent.");
         editForm.reset();
-        toggleModal("new-project-modal");
-        console.log(project);
+        console.log("Form reset.");
+        toggleModal("edit-project-modal");
+        console.log(projectsManager.getProject(projectsManager.currentProject));
       } catch (err) {
         new ErrorPopup(err.message);
       }
