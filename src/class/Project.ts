@@ -55,6 +55,8 @@ export class Project implements IProject {
   private setUi() {
     // Initiating a HTML Div for PROJECT CARD with new data
     this.ui = document.createElement("div");
+    //Setting id for the element
+    this.ui.id = this.id;
     // Setting the class name for Div
     this.ui.className = "project-card";
     // Defining the children for Div Element

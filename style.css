@@ -294,3 +294,7 @@ select:focus {
 .todo-item:hover {
   background-color: var(--primary);
 }
+
+#add-todo-button:hover {
+  cursor: pointer;
+}

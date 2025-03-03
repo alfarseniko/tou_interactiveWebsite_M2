@@ -90,20 +90,38 @@ export class ProjectsManager {
       throw new Error(`The project title should be more than 5 characters.`);
     }
     console.log("Okay until data sent to Project object,", data);
+    // DELETING UI CARD FROM MAIN PAGE
+    const cardToDelete = document.getElementById(
+      this.currentProject
+    ) as HTMLDivElement;
+    cardToDelete.remove();
     // Create a function to use project data to edit the project database
+    this.deleteProject(this.currentProject);
     const edittedProject = project.editProject(data);
     this.setDetailsPage(edittedProject);
-    console.log("works then");
+    this.ui.append(edittedProject.ui);
+    // data is stored in the class
+    this.list.push(edittedProject);
+    // EventListener for going to details page
+    this.ui.addEventListener("click", () => {
+      const projectsPage = document.getElementById("projects-page");
+      const detailsPage = document.getElementById("project-details");
+      if (!projectsPage || !detailsPage) {
+        return;
+      }
+      projectsPage.style.display = "none";
+      detailsPage.style.display = "flex";
+      // To provide project specific info on details page
+      this.setDetailsPage(edittedProject);
+    });
   }
   /**------------------SETTING DETAILS PAGE DATA----------------- */
   setDetailsPage(project: Project) {
     this.currentProject = project.id;
-    console.log("works 1");
     const detailsPage = document.getElementById("project-details");
     if (!detailsPage) {
       return;
     }
-    console.log("works 2");
     // Derfining a fields array with the required info about each attribute
     const fields = [
       { selector: "[details-page-info='name-heading']", value: project.name },
@@ -131,7 +149,6 @@ export class ProjectsManager {
         value: project.name[0] + project.name[1],
       },
     ];
-    console.log("works 3");
     // For loop iterates for each value
     fields.forEach(({ selector, value }) => {
       const element = detailsPage.querySelector(selector) as HTMLElement;
@@ -142,7 +159,6 @@ export class ProjectsManager {
         element.style.backgroundColor = this.randomColor();
       }
     });
-    console.log("works all");
   }
 
   getProject(id: string) {
