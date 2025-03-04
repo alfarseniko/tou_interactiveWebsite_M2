@@ -64,6 +64,9 @@ export class ProjectsManager {
     this.ui.append(project.ui);
     // data is stored in the class
     this.list.push(project);
+    if (this.list.length == 1) {
+      this.currentProject = this.list[0].id;
+    }
     // EventListener for going to details page
     this.ui.addEventListener("click", () => {
       const projectsPage = document.getElementById("projects-page");
@@ -102,16 +105,6 @@ export class ProjectsManager {
     if (!project) {
       return;
     }
-    /*  The map() method iterates over the whole array and then returns a list of required elements */
-    const projectNames = this.list.map((project) => {
-      return project.name;
-    });
-    // A custom ERROR has been created for same instances of name
-    /*if (projectNames.includes(project.name)) {
-      throw new Error(
-        `A project with the name, "${project.name}", already exists in the database.`
-      );
-    }*/
 
     // A custom ERROR has been created for less than 5 chars
     if (this.isLessThanFiveChars(project.name)) {
@@ -297,11 +290,19 @@ export class ProjectsManager {
       // feed the array back into the IProject format
       // json as string is type assertion
       // JSON.parse converts string to JSON
-      const projects: IProject[] = JSON.parse(json as string);
+      const projects: Project[] = JSON.parse(json as string);
       // for loop to add all projects to the projectsManager
       for (const project of projects) {
         try {
-          this.newProject(project);
+          const projectIds = this.list.map((project) => {
+            return project.id;
+          });
+          if (projectIds.includes(project.id)) {
+            project.finishDate = new Date(project.finishDate);
+            this.editProject(project.id, project);
+          } else {
+            this.newProject(project);
+          }
         } catch (error) {
           new ErrorPopup(error.message);
         }
