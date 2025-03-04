@@ -1,5 +1,12 @@
+/** ################################################### */
+/**-----------------------IMPORTS---------------------- */
+/** ################################################### */
 import { ErrorPopup } from "./ErrorPopup";
-import { IProject, Project } from "./Project";
+import { IProject, ITodo, Project } from "./Project";
+
+/** ################################################### */
+/**---------------CLASS DEFINITION--------------------- */
+/** ################################################### */
 
 export class ProjectsManager {
   // A list of projects in the app initialized empty
@@ -8,7 +15,9 @@ export class ProjectsManager {
   ui: HTMLElement;
   currentProject: string;
 
-  /*--------------------CONSTRUCTOR-------------------- */
+  /** ################################################### */
+  /**-------------------CONSTRUCTOR---------------------- */
+  /** ################################################### */
   // CONTAINER is the HTMLElement which will house all the project cards
   constructor(container: HTMLElement) {
     /* The container will be assigned to the UI of the object
@@ -27,6 +36,10 @@ export class ProjectsManager {
     };
     this.newProject(data);
   }
+
+  /** ################################################### */
+  /**------------------NEW PROJECT----------------------- */
+  /** ################################################### */
 
   newProject(data: IProject) {
     /*  The map() method iterates over the whole array and then returns a list of required elements */
@@ -67,7 +80,22 @@ export class ProjectsManager {
     return project;
   }
 
-  /** ----------------------EDIT PROJECT-------------------- */
+  /** ################################################### */
+  /**-------------------ADD TODO------------------------- */
+  /** ################################################### */
+
+  addTodo(data: ITodo, id: string) {
+    const project = this.getProject(id);
+    if (!project) {
+      return;
+    }
+    project.addTodo(data);
+    console.log(project);
+  }
+
+  /** ################################################### */
+  /**-----------------EDIT PROJECT----------------------- */
+  /** ################################################### */
   editProject(id: string, data: IProject) {
     // Get the project from the current project open in details page
     const project = this.getProject(id);
@@ -89,7 +117,6 @@ export class ProjectsManager {
     if (this.isLessThanFiveChars(project.name)) {
       throw new Error(`The project title should be more than 5 characters.`);
     }
-    console.log("Okay until data sent to Project object,", data);
     // DELETING UI CARD FROM MAIN PAGE
     const cardToDelete = document.getElementById(
       this.currentProject
@@ -115,7 +142,9 @@ export class ProjectsManager {
       this.setDetailsPage(edittedProject);
     });
   }
-  /**------------------SETTING DETAILS PAGE DATA----------------- */
+  /** ################################################### */
+  /**-----------SETTING DETAILS PAGE DATA---------------- */
+  /** ################################################### */
   setDetailsPage(project: Project) {
     this.currentProject = project.id;
     const detailsPage = document.getElementById("project-details");
@@ -161,6 +190,9 @@ export class ProjectsManager {
     });
   }
 
+  /** ################################################### */
+  /**-------------------GET PROJECT---------------------- */
+  /** ################################################### */
   getProject(id: string) {
     /*  The find() method takes a callback function in which we must
         return a boolean value. The find() method checks which element
@@ -170,7 +202,9 @@ export class ProjectsManager {
     });
     return project;
   }
-
+  /** ################################################### */
+  /**-------------------DELETE PROJECT------------------- */
+  /** ################################################### */
   deleteProject(id: string) {
     /*  The filter() method takes a callback function in which we must return 
         a boolean value. The filter() method checks for all true values and retains the elements while for all false values it removes from the result */
@@ -180,7 +214,9 @@ export class ProjectsManager {
     // Replacing the whole list with 'remaining' which doesnt contain the deleted element
     this.list = remaining;
   }
-
+  /** ################################################### */
+  /**-------------------TOTAL COST----------------------- */
+  /** ################################################### */
   totalCost() {
     let totalCost = 0;
     /*  The forEach() method is a for loop that runs over each element of
@@ -190,7 +226,9 @@ export class ProjectsManager {
     });
     return totalCost;
   }
-
+  /** ################################################### */
+  /**-------------------GET PROJECT BY NAME-------------- */
+  /** ################################################### */
   getProjectByName(name: string) {
     /*  The find() method takes a callback function in which we must
         return a boolean value. The find() method checks which element
@@ -200,7 +238,9 @@ export class ProjectsManager {
     });
     return projectByName;
   }
-
+  /** ################################################### */
+  /**-------------------EXPORT JSON---------------------- */
+  /** ################################################### */
   exportAsJSON(fileName: string = "Projects") {
     /*  JSON.stringify converts any object or array of objects into JSON format
         Arg1 is for the object to be converted
@@ -221,7 +261,9 @@ export class ProjectsManager {
     // url is revoked to prevent memory leaks
     URL.revokeObjectURL(url);
   }
-
+  /** ################################################### */
+  /**-------------------IMPORT JSON---------------------- */
+  /** ################################################### */
   importFromJSON() {
     // Create an input element to upload files
     const input = document.createElement("input");
@@ -267,13 +309,17 @@ export class ProjectsManager {
     });
     input.click();
   }
-  /**  Returns a random color from an array of pre-selected colors */
+  /** ################################################### */
+  /**-------------------RANDOM COLOR---------------------- */
+  /** ################################################### */
   private randomColor() {
     const colors = ["#EDAE49", "#D1495B", "#00798C", "#30638E", "#003D5B"];
     return colors[Math.floor(Math.random() * colors.length)];
   }
 
-  /**  Checks if projectTitle is less than 5 chars */
+  /** ################################################### */
+  /**-------------------LESS THAN FIVE------------------- */
+  /** ################################################### */
   private isLessThanFiveChars(title: string) {
     return title.length < 5 ? true : false;
   }

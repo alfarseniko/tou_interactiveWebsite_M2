@@ -4,6 +4,7 @@
 import { IProject, Role, Status } from "./class/Project";
 import { ProjectsManager } from "./class/ProjectsManager";
 import { ErrorPopup } from "./class/ErrorPopup";
+import { ITodo } from "./class/Project";
 
 /** ################################################### */
 /*--------------------FUNCTIONS-------------------- */
@@ -184,18 +185,16 @@ if (todoForm) {
     e.preventDefault();
     const formData = new FormData(todoForm);
     // Initializing an object of type IProject to store project data
-    let data: IProject = {
-      name: formData.get("name") as string,
+    let data: ITodo = {
       description: formData.get("description") as string,
-      role: formData.get("role") as Role,
       status: formData.get("status") as Status,
       finishDate: new Date(formData.get("finishDate") as string),
     };
     try {
       // Calling NEWPROJECT function
-      projectsManager.editProject(projectsManager.currentProject, data);
+      projectsManager.addTodo(data, projectsManager.currentProject);
       editForm.reset();
-      toggleModal("edit-project-modal");
+      toggleModal("add-todo-modal");
     } catch (err) {
       new ErrorPopup(err.message);
     }

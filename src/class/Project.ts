@@ -13,6 +13,11 @@ export interface IProject {
   status: Status;
   finishDate: Date;
 }
+export interface ITodo {
+  description: string;
+  status: Status;
+  finishDate: Date;
+}
 
 /*--------------------EXPORTING CLASS-------------------- */
 export class Project implements IProject {
@@ -28,6 +33,8 @@ export class Project implements IProject {
   cost: number = Math.random() * 100000000;
   progress: number = Math.random() * 100;
   id: string;
+  todo: ITodo[];
+  todoUI: HTMLDivElement[];
 
   /*--------------------CONSTRUCTOR-------------------- */
   constructor(data: IProject) {
@@ -39,6 +46,8 @@ export class Project implements IProject {
     }
     this.id = uuidv4();
     this.setUi();
+    this.todo = []; // Initialize todo array
+    this.todoUI = []; // Initialize todoUI array
   }
 
   editProject(data: IProject) {
@@ -50,6 +59,29 @@ export class Project implements IProject {
     this.setUi();
 
     return this;
+  }
+  addTodo(data: ITodo) {
+    this.setTodoUI(data);
+    this.todo.push(data);
+  }
+  private setTodoUI(data: ITodo) {
+    const todo = document.createElement("div");
+    todo.className = "todo-item";
+    todo.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div style="display: flex; column-gap: 15px; align-items: center;">
+                    <span class="material-icons-round" style="padding: 10px; background-color: #686868; border-radius: 10px;">construction</span>
+                    <p>${data.description}</p>
+                  </div>
+                  <p style="text-wrap: nowrap; margin-left: 10px;">${
+                    data.finishDate.toISOString().split("T")[0]
+                  }</p>
+                </div>
+    `;
+
+    const todoList = document.getElementById("todo-list") as HTMLDivElement;
+    todoList.appendChild(todo);
+    this.todoUI.push(todo);
   }
 
   private setUi() {
