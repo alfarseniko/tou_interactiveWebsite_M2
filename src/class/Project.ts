@@ -67,6 +67,7 @@ export class Project implements IProject {
   private setTodoUI(data: ITodo) {
     const todo = document.createElement("div");
     todo.className = "todo-item";
+    todo.style.backgroundColor = this.todoColour(data.status);
     todo.innerHTML = `
     <div style="display: flex; justify-content: space-between; align-items: center;">
                   <div style="display: flex; column-gap: 15px; align-items: center;">
@@ -82,6 +83,17 @@ export class Project implements IProject {
     const todoList = document.getElementById("todo-list") as HTMLDivElement;
     todoList.appendChild(todo);
     this.todoUI.push(todo);
+  }
+
+  private todoColour(status: Status) {
+    if (status == "Active") {
+      return "#007bff";
+    }
+    if (status == "Finished") {
+      return "#28a745";
+    } else {
+      return "#f4c542";
+    }
   }
 
   private setUi() {
